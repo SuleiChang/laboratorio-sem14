@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Laboratorio - Empresa
+
+## Description
+
+Aplicación CRUD para el registro, edición y borrado de personas.
+
+## Installation
+
+```bash
+$ npm install
+```
 
 ## Getting Started
 
@@ -18,19 +28,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Desarrollo
 
-## Learn More
+Vista terminada de la tabla personas
 
-To learn more about Next.js, take a look at the following resources:
+![image](https://github.com/SuleiChang/empresa/assets/170781882/4d43f9fe-8be9-42d8-ac0c-4de1320cae26)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edición de datos (Antes)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![image](https://github.com/SuleiChang/empresa/assets/170781882/2a07d3a1-62ff-4873-baca-861a795406b8)
 
-## Deploy on Vercel
+Edición de datos (Después)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![image](https://github.com/SuleiChang/empresa/assets/170781882/6589c029-9457-4055-b6ee-5e7340d4d271)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Vista de datos editados en la tabla
+
+![image](https://github.com/SuleiChang/empresa/assets/170781882/1d6ac035-bea3-477e-874a-abe8bab9bcce)
+
+Eliminación de un registro
+
+![image](https://github.com/SuleiChang/empresa/assets/170781882/9df46e59-950c-4f20-8dda-87120a50b779)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/d9d86ff6-ede2-472a-9120-54e2979c19f6)
+
+
