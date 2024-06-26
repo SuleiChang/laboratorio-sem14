@@ -10,6 +10,7 @@ export const mappedStates: { [key in State]: string } = {
 };
 
 export const userSchema = z.object({
+  nPerCode: z.number(),
   cPerLastname: z
     .string()
     .min(3, { message: "El apellido debería ser más largo" })

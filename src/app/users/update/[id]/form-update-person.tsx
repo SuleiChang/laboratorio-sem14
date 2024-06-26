@@ -4,7 +4,6 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,38 +21,36 @@ import {
 } from "@/components/ui/card";
 import { updateUser } from "@/actions/user-actions";
 import { userSchema } from "@/validations/personSchema";
-import { DatePicker } from "@/components/date-picker";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { z } from "zod";
 
-type Inputs = {
-  nPerCode: number;
-  cPerLastname: string;
-  cPerName: string;
-  cPerAddress: string;
-  cPerDateBorn: Date;
-  nPerYears: number;
-  nPerSalary: number;
-  cPerRnd: string;
-  cPerState: string;
-  cPerSexo: string;
-  remember_token: string;
-};
-
-export function FormUpdatePerson({ user }: { user: Inputs }) {
-  console.log(user)
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<Inputs>({
+// Asegurarnos de que `user` se derive del esquema de Zod
+export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> }) {
+  const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       nPerCode: user.nPerCode,
       cPerLastname: user.cPerLastname,
       cPerName: user.cPerName,
       cPerAddress: user.cPerAddress,
-      cPerDateBorn: new Date(user.cPerDateBorn), // Asegurarse de que la fecha sea un objeto Date
+      cPerDateBorn: user.cPerDateBorn,
       nPerYears: user.nPerYears,
       nPerSalary: user.nPerSalary,
       cPerRnd: user.cPerRnd,
@@ -63,184 +60,223 @@ export function FormUpdatePerson({ user }: { user: Inputs }) {
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const formData = new FormData();
-    formData.append("nPerCode", user.nPerCode.toString());
-    formData.append("cPerLastname", data.cPerLastname);
-    formData.append("cPerName", data.cPerName);
-    formData.append("cPerAddress", data.cPerAddress);
-    formData.append("cPerDateBorn", new Date(data.cPerDateBorn).toISOString().split("T")[0]); // Formatear la fecha correctamente
-    formData.append("nPerYears", data.nPerYears.toString());
-    formData.append("nPerSalary", data.nPerSalary.toString());
-    formData.append("cPerRnd", data.cPerRnd);
-    formData.append("cPerState", data.cPerState);
-    formData.append("cPerSexo", data.cPerSexo || "");
-    formData.append("remember_token", data.remember_token);
-
-    await updateUser(formData);
+  const onSubmit: SubmitHandler<z.infer<typeof userSchema>> = async (data) => {
+    console.log(data);
+    await updateUser(data);
   };
 
   return (
     <div className="flex min-h-screen w-full m-auto flex-col pb-24 pt-10">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="hidden" value={user.nPerCode} {...register("nPerCode")} />
-        <Card className="max-w-2xl m-auto">
-          <CardHeader>
-            <CardTitle className="text-3xl mb-4">Actualizar Persona</CardTitle>
-            <CardDescription>
-              Rellena el formulario para actualizar los datos.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex w-full gap-x-5">
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerName">Nombre:</Label>
-                  <Input type="text" id="cPerName" {...register("cPerName")} />
-                  {errors.cPerName && (
-                    <p className="text-red-500">{errors.cPerName.message}</p>
-                  )}
-                </div>
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerLastname">Apellido:</Label>
-                  <Input
-                    type="text"
-                    id="cPerLastname"
-                    {...register("cPerLastname")}
-                  />
-                  {errors.cPerLastname && (
-                    <p className="text-red-500">{errors.cPerLastname.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full gap-x-5">
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerAddress">Dirección:</Label>
-                  <Input
-                    type="text"
-                    id="cPerAddress"
-                    {...register("cPerAddress")}
-                  />
-                  {errors.cPerAddress && (
-                    <p className="text-red-500">{errors.cPerAddress.message}</p>
-                  )}
-                </div>
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerDateBorn">Fecha de Nacimiento:</Label>
-                  <Controller
-                    name="cPerDateBorn"
-                    control={control}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <Card className="max-w-2xl m-auto">
+            <CardHeader>
+              <CardTitle className="text-3xl mb-4">Actualizar Persona</CardTitle>
+              <CardDescription>
+                Rellena el formulario para actualizar los datos.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <input type="hidden" name="nPerCode" value={user.nPerCode} />
+              <div className="grid w-full items-center gap-4">
+                <div className="flex w-full gap-x-5">
+                  <FormField
+                    control={form.control}
+                    name="cPerName"
                     render={({ field }) => (
-                      <DatePicker date={field.value} setDate={field.onChange} />
+                      <FormItem className="w-1/2">
+                        <FormLabel>Nombre</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
-                  {errors.cPerDateBorn && (
-                    <p className="text-red-500">{errors.cPerDateBorn.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full gap-x-5">
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="nPerYears">Años:</Label>
-                  <Input
-                    type="number"
-                    id="nPerYears"
-                    {...register("nPerYears")}
-                  />
-                  {errors.nPerYears && (
-                    <p className="text-red-500">{errors.nPerYears.message}</p>
-                  )}
-                </div>
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="nPerSalary">Salario:</Label>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    id="nPerSalary"
-                    {...register("nPerSalary")}
-                  />
-                  {errors.nPerSalary && (
-                    <p className="text-red-500">{errors.nPerSalary.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerRnd">RND:</Label>
-                <Input type="text" id="cPerRnd" {...register("cPerRnd")} />
-                {errors.cPerRnd && (
-                  <p className="text-red-500">{errors.cPerRnd.message}</p>
-                )}
-              </div>
-              <div className="flex w-full gap-x-5">
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerState">Estado:</Label>
-                  <Controller
-                    name="cPerState"
-                    control={control}
+                  <FormField
+                    control={form.control}
+                    name="cPerLastname"
                     render={({ field }) => (
-                      <Select
-                        {...field}
-                        onValueChange={(value) => field.onChange(value)}
-                        defaultValue={user.cPerState}
-                      >
-                        <SelectTrigger id="cPerState">
-                          <SelectValue placeholder="Seleccione un estado" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectItem value="1">Activo</SelectItem>
-                          <SelectItem value="0">Inactivo</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormItem className="w-1/2">
+                        <FormLabel>Apellido</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
-                  {errors.cPerState && (
-                    <p className="text-red-500">{errors.cPerState.message}</p>
-                  )}
                 </div>
-                <div className="w-1/2 flex flex-col space-y-3">
-                  <Label htmlFor="cPerSexo">Sexo:</Label>
-                  <Controller
-                    name="cPerSexo"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        onValueChange={(value) => field.onChange(value)}
-                        defaultValue={user.cPerSexo}
-                      >
-                        <SelectTrigger id="cPerSexo">
-                          <SelectValue placeholder="Seleccione un sexo" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectItem value="Masculino">Masculino</SelectItem>
-                          <SelectItem value="Femenino">Femenino</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                  {errors.cPerSexo && (
-                    <p className="text-red-500">{errors.cPerSexo.message}</p>
+                <div className="flex w-full gap-x-5">
+                <FormField
+                  control={form.control}
+                  name="cPerAddress"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Dirección</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </div>
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="remember_token">Token de recordatorio:</Label>
-                <Input
-                  type="text"
-                  id="remember_token"
-                  {...register("remember_token")}
                 />
-                {errors.remember_token && (
-                  <p className="text-red-500">{errors.remember_token.message}</p>
-                )}
+                <FormField
+                  control={form.control}
+                  name="cPerDateBorn"
+                  render={({ field }) => (
+                    <FormItem className="w-full flex flex-col">
+                      <FormLabel className="my-1">Fecha de Nacimiento</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value), "PPP")
+                              ) : (
+                                <span>Seleccione una fecha</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={new Date(field.value)}
+                            onSelect={(date) => field.onChange(date?.toISOString())}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-end">
-            <Button type="submit">Guardar</Button>
-          </CardFooter>
-        </Card>
-      </form>
+              <div className="flex w-full gap-x-5">
+              <FormField
+                  control={form.control}
+                  name="nPerYears"
+                  render={({ field }) => (
+                    <FormItem className="w-1/2">
+                      <FormLabel>Años</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="nPerSalary"
+                  render={({ field }) => (
+                    <FormItem className="w-1/2">
+                      <FormLabel>Salario</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.01" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+                <FormField
+                  control={form.control}
+                  name="cPerRnd"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>RND</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              <div className="flex w-full gap-x-5">
+                <FormField
+                    control={form.control}
+                    name="cPerState"
+                    render={({ field }) => (
+                      <FormItem className="w-1/2">
+                        <FormLabel>Estado</FormLabel>
+                        <FormControl>
+                          <Select
+                            defaultValue={field.value.toString()}
+                            onValueChange={(value) => field.onChange(value)}
+                          >
+                            <SelectTrigger id="cPerState">
+                              <SelectValue placeholder="Seleccione un estado" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">Activo</SelectItem>
+                              <SelectItem value="0">Inactivo</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cPerSexo"
+                    render={({ field }) => (
+                      <FormItem className="w-1/2">
+                        <FormLabel>Sexo</FormLabel>
+                        <FormControl>
+                          <Select
+                            defaultValue={field.value}
+                            onValueChange={(value) => field.onChange(value)}
+                          >
+                            <SelectTrigger id="cPerSexo">
+                              <SelectValue placeholder="Seleccione un estado" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Femenino">Femenino</SelectItem>
+                              <SelectItem value="Masculino">Masculino</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="remember_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Token</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex w-full">
+              <Button className="w-full" type="submit">
+                Actualizar
+              </Button>
+            </CardFooter>
+          </Card>
+        </form>
+      </Form>
     </div>
   );
 }

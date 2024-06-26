@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,52 +21,39 @@ import {
 } from "@/components/ui/card";
 import { createUser } from "@/actions/user-actions";
 import { userSchema } from "@/validations/personSchema"; // Asegúrate de importar el esquema de validación
+import { format } from "date-fns";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "@radix-ui/react-icons";
 
-type Inputs = {
-  cPerLastname: string;
-  cPerName: string;
-  cPerAddress: string;
-  cPerDateBorn: string;
-  nPerYears: number;
-  nPerSalary: number;
-  cPerRnd: string;
-  cPerState: "0" | "1";
-  cPerSexo: string;
-  remember_token: string;
-};
 export function FormCreatePerson() {
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
   });
 
-  console.log(errors);
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // Convierte los datos a FormData
-    const formData = new FormData();
-    formData.append("cPerLastname", data.cPerLastname);
-    formData.append("cPerName", data.cPerName);
-    formData.append("cPerAddress", data.cPerAddress);
-    formData.append("cPerDateBorn", data.cPerDateBorn);
-    formData.append("nPerYears", data.nPerYears.toString());
-    formData.append("nPerSalary", data.nPerSalary.toString());
-    formData.append("cPerRnd", data.cPerRnd);
-    formData.append("cPerState", data.cPerState);
-    formData.append("cPerSexo", data.cPerSexo);
-    formData.append("remember_token", data.remember_token);
-
-    await createUser(formData);
+  const onSubmit: SubmitHandler<z.infer<typeof userSchema>> = async (data) => {
+    console.log(data);
+    await createUser(data);
   };
 
   return (
-    <div className="flex min-h-screen w-full m-auto flex-col pb-24 pt-10">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-h-screen w-full m-auto flex-col pb-24 pt-10">
         <Card className="max-w-2xl m-auto">
           <CardHeader>
             <CardTitle className="text-3xl mb-4">Crear Persona</CardTitle>
@@ -77,114 +63,178 @@ export function FormCreatePerson() {
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerLastname">Apellido:</Label>
-                <Input
-                  type="text"
-                  id="cPerLastname"
-                  {...register("cPerLastname")}
-                />
-                {errors.cPerLastname && (
-                  <p className="text-red-500">{errors.cPerLastname.message}</p>
+              <FormField
+                control={form.control}
+                name="cPerLastname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Apellido</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerName">Nombre:</Label>
-                <Input type="text" id="cPerName" {...register("cPerName")} />
-                {errors.cPerName && (
-                  <p className="text-red-500">{errors.cPerName.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerAddress">Dirección:</Label>
-                <Input
-                  type="text"
-                  id="cPerAddress"
-                  {...register("cPerAddress")}
-                />
-                {errors.cPerAddress && (
-                  <p className="text-red-500">{errors.cPerAddress.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerAddress"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dirección</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerDateBorn">Fecha de Nacimiento:</Label>
-                <Input
-                  type="date"
-                  id="cPerDateBorn"
-                  {...register("cPerDateBorn")}
-                />
-                {errors.cPerDateBorn && (
-                  <p className="text-red-500">{errors.cPerDateBorn.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerDateBorn"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Fecha de Nacimiento</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(new Date(field.value), "PPP")
+                            ) : (
+                              <span>Seleccione una fecha</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={new Date(field.value)}
+                          onSelect={(date) => field.onChange(date?.toISOString())}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>
+                      Su fecha de nacimiento se usa para calcular su edad.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="nPerYears">Años:</Label>
-                <Input type="number" id="nPerYears" {...register("nPerYears")} />
-                {errors.nPerYears && (
-                  <p className="text-red-500">{errors.nPerYears.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="nPerYears"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Años</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="nPerSalary">Salario:</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  id="nPerSalary"
-                  {...register("nPerSalary")}
-                />
-                {errors.nPerSalary && (
-                  <p className="text-red-500">{errors.nPerSalary.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="nPerSalary"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Salario</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerRnd">RND:</Label>
-                <Input type="text" id="cPerRnd" {...register("cPerRnd")} />
-                {errors.cPerRnd && (
-                  <p className="text-red-500">{errors.cPerRnd.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerRnd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RND</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerState">Estado:</Label>
-                <Controller
-                  name="cPerState"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      onValueChange={(value) => field.onChange(value)}
-                    >
-                      <SelectTrigger id="cPerState">
-                        <SelectValue placeholder="Seleccione un estado" />
-                      </SelectTrigger>
-                      <SelectContent position="popper">
-                        <SelectItem value="1">Activo</SelectItem>
-                        <SelectItem value="0">Inactivo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.cPerState && (
-                  <p className="text-red-500">{errors.cPerState.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerState"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estado</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                      >
+                        <SelectTrigger id="cPerState">
+                          <SelectValue placeholder="Seleccione un estado" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">Activo</SelectItem>
+                          <SelectItem value="0">Inactivo</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="cPerSexo">Sexo:</Label>
-                <Input type="text" id="cPerSexo" {...register("cPerSexo")} />
-                {errors.cPerSexo && (
-                  <p className="text-red-500">{errors.cPerSexo.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="cPerSexo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sexo</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="remember_token">Token:</Label>
-                <Input
-                  type="text"
-                  id="remember_token"
-                  {...register("remember_token")}
-                />
-                {errors.remember_token && (
-                  <p className="text-red-500">{errors.remember_token.message}</p>
+              />
+              <FormField
+                control={form.control}
+                name="remember_token"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Token</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
+              />
             </div>
           </CardContent>
           <CardFooter className="flex w-full">
@@ -194,7 +244,7 @@ export function FormCreatePerson() {
           </CardFooter>
         </Card>
       </form>
-      <div>{JSON.stringify(watch(), null, 2)}</div>
-    </div>
+      <div>{JSON.stringify(form.watch(), null, 2)}</div>
+    </Form>
   );
 }
