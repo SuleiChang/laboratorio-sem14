@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Laboratorio - Empresa
+
+## Description
+
+Aplicación CRUD para el registro, edición y borrado de personas.
+
+## Installation
+
+```bash
+$ npm install
+```
 
 ## Getting Started
 
@@ -18,19 +28,31 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Desarrollo
 
-## Learn More
+Vista terminada de la tabla personas
 
-To learn more about Next.js, take a look at the following resources:
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/6d02e14b-77bd-4b73-a56f-1852d9ce7835)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edición de datos (Antes)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/0f1ba020-6f03-4326-874c-8643ce41b2c9)
 
-## Deploy on Vercel
+Edición de datos (Después)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/f5d324d1-d8b3-47be-a093-162bebcef0eb)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Vista de datos editados en la tabla
+
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/268a7be1-840e-4d18-ad96-58c88e54f312)
+
+Eliminación de un registro (Aplicación)
+
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/da8d2b8e-64b1-4c26-868e-67a1055295ca)
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/c7fd39e2-257d-4e2f-9f4a-c582ade56bf8)
+
+Eliminación de un registro (Base de datos)
+
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/d90dd43d-2ca2-4f2d-890b-bb590530e633)
+![image](https://github.com/Arturo-CS/empresa/assets/128654866/3f100666-9156-401b-ab3c-66812dfd8c37)
+
