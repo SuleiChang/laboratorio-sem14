@@ -32,27 +32,23 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 Vista terminada de la tabla personas
 
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/6d02e14b-77bd-4b73-a56f-1852d9ce7835)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/4d43f9fe-8be9-42d8-ac0c-4de1320cae26)
 
 Edición de datos (Antes)
 
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/0f1ba020-6f03-4326-874c-8643ce41b2c9)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/2a07d3a1-62ff-4873-baca-861a795406b8)
 
 Edición de datos (Después)
 
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/f5d324d1-d8b3-47be-a093-162bebcef0eb)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/6589c029-9457-4055-b6ee-5e7340d4d271)
 
 Vista de datos editados en la tabla
 
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/268a7be1-840e-4d18-ad96-58c88e54f312)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/1d6ac035-bea3-477e-874a-abe8bab9bcce)
 
-Eliminación de un registro (Aplicación)
+Eliminación de un registro
 
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/da8d2b8e-64b1-4c26-868e-67a1055295ca)
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/c7fd39e2-257d-4e2f-9f4a-c582ade56bf8)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/9df46e59-950c-4f20-8dda-87120a50b779)
+![image](https://github.com/SuleiChang/empresa/assets/170781882/d9d86ff6-ede2-472a-9120-54e2979c19f6)
 
-Eliminación de un registro (Base de datos)
-
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/d90dd43d-2ca2-4f2d-890b-bb590530e633)
-![image](https://github.com/Arturo-CS/empresa/assets/128654866/3f100666-9156-401b-ab3c-66812dfd8c37)
 
