@@ -47,7 +47,6 @@ export function FormCreatePerson() {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof userSchema>> = async (data) => {
-    console.log(data);
     await createUser(data);
   };
 
@@ -139,9 +138,6 @@ export function FormCreatePerson() {
                         />
                       </PopoverContent>
                     </Popover>
-                    <FormDescription>
-                      Su fecha de nacimiento se usa para calcular su edad.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

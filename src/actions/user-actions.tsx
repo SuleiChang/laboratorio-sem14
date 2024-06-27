@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { userSchema } from "@/validations/personSchema";
+import { userSchema, userSchemaUpdate } from "@/validations/personSchema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -66,7 +66,7 @@ export async function removeUser(formData: FormData) {
   revalidatePath("/");
 }
 
-export async function updateUser(data: z.infer<typeof userSchema>) {
+export async function updateUser(data: z.infer<typeof userSchemaUpdate>) {
   const {
     nPerCode,
     cPerLastname,
@@ -90,8 +90,8 @@ export async function updateUser(data: z.infer<typeof userSchema>) {
       cPerName,
       cPerAddress,
       cPerDateBorn: new Date(cPerDateBorn),
-      nPerYears,
-      nPerSalary,
+      nPerYears: parseInt(nPerYears),
+      nPerSalary: parseFloat(nPerSalary),
       cPerRnd,
       cPerState,
       cPerSexo,

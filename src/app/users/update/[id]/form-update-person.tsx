@@ -20,8 +20,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { updateUser } from "@/actions/user-actions";
-import { userSchema } from "@/validations/personSchema";
-import { format } from "date-fns";
+import { userSchema, userSchemaUpdate } from "@/validations/personSchema";
+import { format, parseISO, add } from 'date-fns';
 import { cn } from "@/lib/utils";
 import {
   Form,
@@ -42,17 +42,17 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { z } from "zod";
 
 // Asegurarnos de que `user` se derive del esquema de Zod
-export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> }) {
-  const form = useForm<z.infer<typeof userSchema>>({
+export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchemaUpdate> }) {
+  const form = useForm<z.infer<typeof userSchemaUpdate>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       nPerCode: user.nPerCode,
       cPerLastname: user.cPerLastname,
       cPerName: user.cPerName,
       cPerAddress: user.cPerAddress,
-      cPerDateBorn: user.cPerDateBorn,
-      nPerYears: user.nPerYears,
-      nPerSalary: user.nPerSalary,
+      cPerDateBorn: user.cPerDateBorn ? add(parseISO(user.cPerDateBorn), { hours: 5 }).toISOString() : '',
+      nPerYears: user.nPerYears.toString(),
+      nPerSalary: user.nPerSalary.toString(),
       cPerRnd: user.cPerRnd,
       cPerState: user.cPerState,
       cPerSexo: user.cPerSexo,
@@ -60,8 +60,7 @@ export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> })
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof userSchema>> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<z.infer<typeof userSchemaUpdate>> = async (data) => {
     await updateUser(data);
   };
 
@@ -138,7 +137,7 @@ export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> })
                               )}
                             >
                               {field.value ? (
-                                format(new Date(field.value), "PPP")
+                                format(parseISO(field.value), 'PPP')
                               ) : (
                                 <span>Seleccione una fecha</span>
                               )}
@@ -147,15 +146,15 @@ export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> })
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={new Date(field.value)}
-                            onSelect={(date) => field.onChange(date?.toISOString())}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
+                        <Calendar
+                          mode="single"
+                          selected={field.value ? new Date(field.value) : undefined}
+                          onSelect={(date) => field.onChange(date?.toISOString())}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
                         </PopoverContent>
                       </Popover>
                       <FormMessage />
@@ -164,14 +163,14 @@ export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> })
                 />
               </div>
               <div className="flex w-full gap-x-5">
-              <FormField
+                <FormField
                   control={form.control}
                   name="nPerYears"
                   render={({ field }) => (
                     <FormItem className="w-1/2">
                       <FormLabel>Años</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} />
+                        <Input type="text" {...field} onChange={(e) => field.onChange(e.target.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -184,26 +183,26 @@ export function FormUpdatePerson({ user }: { user: z.infer<typeof userSchema> })
                     <FormItem className="w-1/2">
                       <FormLabel>Salario</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" {...field} />
+                        <Input type="text" {...field} onChange={(e) => field.onChange(e.target.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-                <FormField
-                  control={form.control}
-                  name="cPerRnd"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>RND</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="cPerRnd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RND</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="flex w-full gap-x-5">
                 <FormField
                     control={form.control}

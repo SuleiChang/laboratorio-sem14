@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 import { ButtonDelete } from "./button-delete";
+import { format, parseISO } from 'date-fns';
 
 interface User {
   nPerCode: number;
@@ -58,7 +59,7 @@ export default function UserTable({ users }: UserTableProps) {
             <TableCell>{user.cPerLastname}</TableCell>
             <TableCell>{user.cPerName}</TableCell>
             <TableCell>{user.cPerAddress}</TableCell>
-            <TableCell>{new Date(user.cPerDateBorn).toLocaleDateString()}</TableCell>
+            <TableCell>{format(parseISO(user.cPerDateBorn), 'PPP')}</TableCell>
             <TableCell>{user.nPerYears}</TableCell>
             <TableCell>{user.nPerSalary}</TableCell>
             <TableCell>{user.cPerRnd}</TableCell>
