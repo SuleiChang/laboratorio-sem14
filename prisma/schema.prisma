@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Person {
-  nPerCode       Int      @id @default(autoincrement()) @db.Integer
+  nPerCode       String   @id @default(uuid()) @db.Uuid
   cPerLastname   String   @db.VarChar(50)
   cPerName       String   @db.VarChar(50)
   cPerAddress    String   @db.VarChar(100)

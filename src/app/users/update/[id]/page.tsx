@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { FormUpdatePerson } from "./form-update-person";
 import { redirect } from "next/navigation";
-import { formatISO } from 'date-fns';
 
 // Asegúrate de definir el tipo de usuario que espera tu componente
 interface User {
@@ -29,6 +28,7 @@ export default async function UserUpdate({ params }: { params: { id: string } })
     redirect("/");
   }
 
+  console.log(user)
   // Convertir Date a string y asegurar que cPerState sea "0" o "1"
   const formattedUser: User = {
     ...user,
