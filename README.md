@@ -1,8 +1,8 @@
-# Laboratorio - Empresa
+# Laboratorio - Envio correos
 
 ## Description
 
-Aplicación CRUD para el registro, edición y borrado de personas.
+Esta aplicación envía correos con mailtrap
 
 ## Installation
 
@@ -30,25 +30,13 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Desarrollo
 
-Vista terminada de la tabla personas
+Vista del formulario
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/4d43f9fe-8be9-42d8-ac0c-4de1320cae26)
+![image](https://github.com/SuleiChang/form-contacto/assets/170781882/15a48d4c-6277-4a57-889a-bbabc200ccef)
 
-Edición de datos (Antes)
+Recibo del correo
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/2a07d3a1-62ff-4873-baca-861a795406b8)
+![image](https://github.com/SuleiChang/form-contacto/assets/170781882/bfc12c11-6d0f-46cf-b329-a7ebf35b1711)
 
-Edición de datos (Después)
-
-![image](https://github.com/SuleiChang/empresa/assets/170781882/6589c029-9457-4055-b6ee-5e7340d4d271)
-
-Vista de datos editados en la tabla
-
-![image](https://github.com/SuleiChang/empresa/assets/170781882/1d6ac035-bea3-477e-874a-abe8bab9bcce)
-
-Eliminación de un registro
-
-![image](https://github.com/SuleiChang/empresa/assets/170781882/9df46e59-950c-4f20-8dda-87120a50b779)
-![image](https://github.com/SuleiChang/empresa/assets/170781882/d9d86ff6-ede2-472a-9120-54e2979c19f6)
 
 
