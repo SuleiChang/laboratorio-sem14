@@ -24,11 +24,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/actions/send-email";
-import { CreateContact } from "@/actions/contact-actions";
+import { UpdateContact } from "@/actions/contact-actions";
 
-function FormContact() {
+interface FormUpdateContactProps {
+    contact: z.infer<typeof contactSchema>;
+    id: number;
+  }
+
+function FormUpdateContact({ contact, id }: FormUpdateContactProps) {
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
+    defaultValues: {
+        name: contact.name,
+        email: contact.email,
+        mailSubject: contact.mailSubject,
+        mailMessage: contact.mailMessage,
+    }
   });
 
   const onSubmit = async (data: z.infer<typeof contactSchema>) => {
@@ -36,66 +47,15 @@ function FormContact() {
     try {
       const result = await sendEmail({
         from: data.email, // Suponiendo que el correo del remitente es el del formulario
-        to: "schang@unitru.edu.pe", // Cambia esto al destinatario real
+        to: "ccortegana@unitru.edu.pe", // Cambia esto al destinatario real
         subject: data.mailSubject,
         text: data.mailMessage,
         html: `
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Nuevo mensaje de contacto</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              line-height: 1.6;
-              color: #333;
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 20px;
-            }
-            .header {
-              background-color: #4a90e2;
-              color: white;
-              padding: 20px;
-              text-align: center;
-            }
-            .content {
-              background-color: #f9f9f9;
-              border: 1px solid #ddd;
-              border-radius: 5px;
-              padding: 20px;
-              margin-top: 20px;
-            }
-            .footer {
-              text-align: center;
-              margin-top: 20px;
-              font-size: 0.8em;
-              color: #666;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>Nuevo mensaje de contacto</h1>
-          </div>
-          <div class="content">
-            <h2>Hola, soy ${data.name}</h2>
-            <p><strong>Email:</strong> ${data.email}</p>
-            <p><strong>Asunto:</strong> ${data.mailSubject}</p>
-            <h3>Mensaje:</h3>
-            <p>${data.mailMessage}</p>
-          </div>
-          <div class="footer">
-            <p>Este mensaje fue enviado desde el formulario de contacto de tu sitio web.</p>
-          </div>
-        </body>
-        </html>
-      `
+        <h1>Hola, soy ${data.name}!</h1>
+        <p>${data.mailMessage}</p>`,
       });
       console.log("Email enviado correctamente.");
-      if (result.messageId) await CreateContact(data);
+      if (result.messageId) await UpdateContact(id , data);
       form.reset()
     } catch (error: any) {
       console.error("Error al enviar el email: %s", error.message);
@@ -107,9 +67,9 @@ function FormContact() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl mb-4">Contactar</CardTitle>
+            <CardTitle className="text-3xl mb-4">Actualizar información</CardTitle>
             <CardDescription>
-              Rellena el formulario para contactar conmigo.
+              Rellena el formulario para actualizar.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -175,4 +135,4 @@ function FormContact() {
   );
 }
 
-export default FormContact;
+export default FormUpdateContact;

@@ -1,11 +1,16 @@
-import { removeUser } from "@/actions/user-actions";
 import { Button } from "./ui/button";
 import { FaTrash } from "react-icons/fa";
 
-export function ButtonDelete({ nPerCode }: { nPerCode: number }) {
+interface PropsDeleteButton {
+  label: string,
+  nPerCode: number,
+  functionRemove: (formData: FormData) => void;
+}
+
+export function ButtonDelete({ nPerCode, functionRemove, label }: PropsDeleteButton) {
   return (
-    <form action={removeUser}>
-      <input type="hidden" name="nPerCode" value={nPerCode} />
+    <form action={functionRemove}>
+      <input type="hidden" name={label} value={nPerCode} />
       <Button variant="destructive">
         <FaTrash />
       </Button>
