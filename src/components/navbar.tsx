@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
 import { ModeToggle } from "./theme-toggle-button";
 import { buttonVariants } from "./ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 function Navbar() {
+  const { data: session } = useSession();
+
   return (
     <nav className="flex justify-between py-5">
       <Link href="/">
@@ -15,15 +19,28 @@ function Navbar() {
         <Link href="/" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
           Inicio
         </Link>
-        <Link href="/users/register" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
-          Registrarse
-        </Link>
-        {/* <Link href="/users" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
-          Personas
-        </Link>
-        <Link href="/contact" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
-          Contacto
-        </Link> */}
+        {session ? (
+          <>
+            <Link href="/dashboard" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
+              Dashboard
+            </Link>
+            <span className={buttonVariants({ variant: "secondary" })}>
+              {session.user?.name}
+            </span>
+            <button onClick={() => signOut()} className={buttonVariants({ variant: "default", class:"hover:text-emerald-200" })}>
+              Cerrar Sesión
+            </button>
+          </>
+        ) : (
+          <>
+            <Link href="/users/register" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
+              Registrarse
+            </Link>
+            <Link href="/users/login" className={buttonVariants({ variant: "default", class:"hover:text-emerald-200" })}>
+              Ingresar
+            </Link>
+          </>
+        )}
         <ModeToggle />
       </div>
     </nav>
