@@ -15,12 +15,15 @@ function Navbar() {
         <Link href="/" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
           Inicio
         </Link>
-        <Link href="/users" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
+        <Link href="/users/register" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
+          Registrarse
+        </Link>
+        {/* <Link href="/users" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
           Personas
         </Link>
         <Link href="/contact" className={buttonVariants({ variant: "secondary", class:"hover:text-emerald-200" })}>
           Contacto
-        </Link>
+        </Link> */}
         <ModeToggle />
       </div>
     </nav>
