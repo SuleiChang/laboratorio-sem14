@@ -30,28 +30,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Desarrollo
 
-### Formulario de contacto
+### Formulario login
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/8f45f0fd-8799-43e0-905f-26c46baa8832)
+![image](https://github.com/user-attachments/assets/a419764a-b690-4b4d-a3ae-a219aca727e0)
 
-### Correo enviado
+### Notificación de ingreso exitoso
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/4c546309-1f85-42e6-83df-97bddf8a9aad)
+![image](https://github.com/user-attachments/assets/f0809c06-11f4-477e-9aed-1bdd319015b9)
 
-### Tabla
+### Ruta protegida el contenido esta disponible con aunteticación
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/21a65e01-fbd6-42e4-81ed-7ee4c6f2b5b8)
+![image](https://github.com/user-attachments/assets/120e418e-156a-47c9-a6a3-442cddd238b4)
 
-### Editar contacto
+### Ruta protegida no se puede ver el contenido sin autenticación
 
-![image](https://github.com/SuleiChang/empresa/assets/170781882/0bd92174-3230-400e-b70d-e79f29ef5f7d)
+![image](https://github.com/user-attachments/assets/95ef7e2c-16d2-44ad-b99a-a5ded30ef9ef)
 
-### Tabla actualizada
-
-![image](https://github.com/SuleiChang/empresa/assets/170781882/95ee8f4f-2f72-48ba-a286-9949def32c3f)
-
-### Borrar registro
-
-![image](https://github.com/SuleiChang/empresa/assets/170781882/2191b92d-e700-4904-ad32-add947da391e)
-![image](https://github.com/SuleiChang/empresa/assets/170781882/d9c6edd4-6acb-462b-a861-9668617543c9)
-![image](https://github.com/SuleiChang/empresa/assets/170781882/b919a78f-5d5a-4ebf-b5b0-f6c41cb799b7)
