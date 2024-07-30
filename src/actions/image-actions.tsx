@@ -59,7 +59,7 @@ export async function UpdateImage(formData: FormData) {
     const imageFile = formData.get('imageFile') as File | null;
 
     if (!id || !name) {
-        throw new Error("ID y nombre son requeridos");
+        return { success: false, error: "ID y nombre son requeridos" };
     }
 
     try {
@@ -76,10 +76,10 @@ export async function UpdateImage(formData: FormData) {
         });
 
         revalidatePath("/images");
-        redirect("/images");
+        return { success: true };
     } catch (error) {
         console.error("Error al actualizar la imagen:", error);
-        throw new Error("No se pudo actualizar la imagen");
+        return { success: false, error: "No se pudo actualizar la imagen" };
     }
 }
 

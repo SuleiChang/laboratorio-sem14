@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { UpdateImage } from "@/actions/image-actions";
 import { updateImageSchema } from "@/validations/imageSchema";
+import { useRouter } from 'next/navigation';
 
 // Definimos el tipo ImageFormData basado en el schema de actualización
 type ImageFormData = z.infer<typeof updateImageSchema>;
@@ -37,6 +38,7 @@ interface FormUpdateImageProps {
 }
 
 export function FormUpdateImage({ image, id }: FormUpdateImageProps) {
+  const router = useRouter();
   const form = useForm<ImageFormData>({
     resolver: zodResolver(updateImageSchema),
     defaultValues: {
@@ -53,9 +55,15 @@ export function FormUpdateImage({ image, id }: FormUpdateImageProps) {
     }
     
     try {
-        await UpdateImage(formData);
-        toast.success("Imagen actualizada exitosamente");
+        const result = await UpdateImage(formData);
+        if (result.success) {
+            toast.success("Imagen actualizada");
+            router.push('/images'); // Redirige a la página de imágenes
+        } else {
+            toast.error(result.error || "Error al actualizar la imagen");
+        }
     } catch (error) {
+        console.error("Error al actualizar la imagen:", error);
         toast.error("Error al actualizar la imagen");
     }
   };
