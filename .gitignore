@@ -29,7 +29,7 @@ yarn-error.log*
 .env
 
 #README
-README.md
+/README.md
 
 # vercel
 .vercel
