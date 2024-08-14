@@ -2,7 +2,7 @@
 
 ## Description
 
-Aplicación CRUD para las imágenes.
+Conversion de imagenes, colas y eventos
 
 ## Installation
 
@@ -30,24 +30,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Desarrollo
 
-### Lista de imágenes
+### Subida de imagen
 
-![image](https://github.com/user-attachments/assets/3d4f5e08-d4a8-479c-9236-4f552a11d2f1)
+![image](https://github.com/user-attachments/assets/06bf9666-4d22-49c9-bc10-3c26b1a1c5b4)
 
-### Formulario de subir imagen
+notificación del evento
+
+![image](https://github.com/user-attachments/assets/8906c103-3044-4fd7-9ad6-028e0822d98a)
+
+### Comparacion de imagenes - Se nota la calidad diferente
 
 ![image](https://github.com/user-attachments/assets/53dc2227-2c40-434f-b6f5-84bc80e1f8b8)
 
-### Editar imagen
+### Funcionalidad
 
-![image](https://github.com/user-attachments/assets/e9213af8-61c9-4c3b-ad91-fa2ac2201691)
+![image](https://github.com/user-attachments/assets/587dafed-929f-45da-93ce-26d6c2a2c92c)
 
-### Lista con los cambios
+### Captura de eventos en la base de datos
 
-![image](https://github.com/user-attachments/assets/8bb5270f-aace-420f-90e0-ac180fac0414)
+![image](https://github.com/user-attachments/assets/35feccc5-3df4-45e9-962d-8ca19fec2507)
 
-### Borrar imagen
+![image](https://github.com/user-attachments/assets/05717291-4ba2-4cf0-8557-795859eab58a)
 
-![image](https://github.com/user-attachments/assets/400d648d-1dec-4887-9a7a-d432b821f74c)
-
-![image](https://github.com/user-attachments/assets/bdf6e8b7-3460-49e5-8f2a-8394516b307c)
